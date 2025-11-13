@@ -1,0 +1,57 @@
+MIT License
+
+Copyright (c) 2025 ShinChanInDev
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+---
+
+## Third-Party Licenses
+
+This software includes third-party libraries and dependencies, each with their
+own licenses. Please refer to the respective package.json files and node_modules
+directories for detailed license information of all dependencies.
+
+## Disclaimer
+
+This software is provided for educational and development purposes. The author
+makes no warranties about the completeness, reliability, or accuracy of this
+software. Any action you take upon the information in this software is strictly
+at your own risk, and the author will not be liable for any losses and damages
+in connection with the use of this software.
+
+## Data Privacy
+
+Users of this software are responsible for ensuring compliance with applicable
+data protection laws and regulations (including but not limited to GDPR, CCPA)
+when collecting, processing, or storing user data.
+
+## Security
+
+While efforts have been made to ensure the security of this software, no system
+is completely secure. Users are responsible for:
+- Keeping dependencies up to date
+- Implementing appropriate security measures
+- Conducting security audits as needed
+- Protecting sensitive configuration and credentials
+
+## Contributions
+
+By contributing to this project, you agree that your contributions will be
+licensed under the same MIT License that covers this project.
