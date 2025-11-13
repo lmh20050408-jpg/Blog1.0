@@ -51,29 +51,21 @@ const startServer = async () => {
   try {
     logger.info('========================================');
     logger.info('🚀 开始启动服务器...');
+    logger.info('👨‍💻 ShinChanInDev');
     logger.info(`📝 运行环境: ${config.env}`);
     logger.info(`🔌 端口号: ${config.port}`);
     logger.info('========================================');
 
     // 初始化数据库连接
-    logger.info('📊 正在连接数据库...');
-    logger.info(`   数据库地址: ${config.database.host}:${config.database.port}`);
-    logger.info(`   数据库名称: ${config.database.name}`);
     await connectWithRetry();
-    logger.info('✅ 数据库连接成功');
 
     // 同步数据库模型（开发环境）
     if (config.env === 'development') {
-      logger.info('🔄 正在同步数据库模型...');
       await syncDatabase({ alter: true });
-      logger.info('✅ 数据库模型同步完成');
     }
 
     // 初始化 Redis 连接
-    logger.info('� 正在运连接 Redis...');
-    logger.info(`   Redis 地址: ${config.redis.host}:${config.redis.port}`);
     await connectRedisWithRetry();
-    logger.info('✅ Redis 连接成功');
 
     // 创建并启动 HTTP/HTTPS 服务器
     logger.info('🌐 正在启动 Web 服务器...');
@@ -82,6 +74,7 @@ const startServer = async () => {
     server.listen(config.port, () => {
       logger.info('========================================');
       logger.info('✅ 服务器启动成功！');
+      logger.info('👨‍💻 Powered by ShinChanInDev');
       logger.info(`🌍 服务地址: ${protocol}://localhost:${config.port}`);
       logger.info(`📚 API 文档: ${protocol}://localhost:${config.port}/api-docs`);
       logger.info(`🏥 健康检查: ${protocol}://localhost:${config.port}/health`);
