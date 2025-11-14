@@ -58,6 +58,33 @@ module.exports = {
         updated_at: new Date(),
       },
       {
+        key: 'about_profile',
+        value: JSON.stringify({
+          name: '',
+          title: '',
+          avatar: '/images/avatar.png',
+          bio: ['', '', ''],
+          socialLinks: [
+            { name: 'twitter', url: '' },
+            { name: 'linkedin', url: '' },
+            { name: 'github', url: '' },
+            { name: 'email', url: '' }
+          ],
+          skills: [
+            { category: '前端', items: [] },
+            { category: '后端', items: [] },
+            { category: '工具', items: [] }
+          ],
+          experience: [],
+          education: []
+        }),
+        type: 'json',
+        description: '关于页面配置数据',
+        is_public: true,
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
         key: 'admin_email',
         value: 'admin@example.com',
         type: 'string',

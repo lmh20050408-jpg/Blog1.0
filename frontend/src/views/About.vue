@@ -165,16 +165,15 @@ const imageRetryCount = ref(0)
 const MAX_RETRY = 5
 const imageRetrying = ref(false)
 
-// Mock profile data
+import { settingsApi } from '@/services/api/settings'
+import { onMounted } from 'vue'
+
+// 初始默认数据，避免首屏闪烁
 const profile = ref<Profile>({
   name: '',
   title: '',
   avatar: '/images/avatar.png',
-  bio: [
-    '',
-    '',
-    ''
-  ],
+  bio: ['', '', ''],
   socialLinks: [
     { name: 'twitter', url: '' },
     { name: 'linkedin', url: '' },
@@ -182,36 +181,36 @@ const profile = ref<Profile>({
     { name: 'email', url: '' }
   ],
   skills: [
-    {
-      category: '前端',
-      items: ['Vue.js', 'React', 'TypeScript', 'Tailwind CSS', 'Vite']
-    },
-    {
-      category: '后端',
-      items: ['Node.js', 'Express', 'PostgreSQL', 'Redis']
-    },
-    {
-      category: '工具',
-      items: ['Git', 'VS Code', 'Figma', 'Postman', 'Jest']
-    }
+    { category: '前端', items: [] },
+    { category: '后端', items: [] },
+    { category: '工具', items: [] }
   ],
-  experience: [
-    {
-      position: '',
-      company: '',
-      period: '',
-      description: ''
-    }
-  ],
-  education: [
-    {
-      degree: '',
-      school: '',
-      period: '',
-      description: ''
-    }
-  ]
+  experience: [],
+  education: []
 })
+
+const loadAboutProfile = async () => {
+  try {
+    const resp = await settingsApi.getAboutProfile()
+    const data = resp.data
+    if (data) {
+      profile.value = {
+        name: data.name || '',
+        title: data.title || '',
+        avatar: data.avatar || '/images/avatar.png',
+        bio: Array.isArray(data.bio) ? data.bio : [],
+        socialLinks: Array.isArray(data.socialLinks) ? data.socialLinks : [],
+        skills: Array.isArray(data.skills) ? data.skills : [],
+        experience: Array.isArray(data.experience) ? data.experience : [],
+        education: Array.isArray(data.education) ? data.education : []
+      }
+    }
+  } catch (e) {
+    // 静默失败，保持默认数据
+  }
+}
+
+onMounted(loadAboutProfile)
 
 // Social icon components
 const getSocialIcon = (name: string) => {

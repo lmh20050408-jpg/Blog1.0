@@ -29,5 +29,13 @@ export const settingsApi = {
    */
   getStats(): Promise<ApiResponse<Stats>> {
     return http.get('/settings/stats')
+  },
+
+  /**
+   * 获取关于页资料
+   * GET /api/v1/settings/about
+   */
+  getAboutProfile(): Promise<ApiResponse<any>> {
+    return http.get('/settings/about')
   }
 }
