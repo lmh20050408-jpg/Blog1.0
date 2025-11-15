@@ -12,6 +12,16 @@ const { errorHandler, notFoundHandler } = require('./middlewares/errorHandler');
 
 const app = express();
 
+// 信任代理，获取真实客户端IP
+app.set('trust proxy', true);
+
+// 自定义 morgan token 获取真实 IP
+morgan.token('client-ip', (req) => {
+  return req.headers['x-forwarded-for']?.split(',')[0] || 
+         req.headers['x-real-ip'] || 
+         req.connection.remoteAddress;
+});
+
 // CORS 配置
 app.use(
   cors({
@@ -22,8 +32,8 @@ app.use(
   })
 );
 
-// Morgan 日志中间件
-app.use(morgan('combined', { stream: logger.stream }));
+// Morgan 日志中间件，使用自定义IP格式
+app.use(morgan(':client-ip - :method :url :status :response-time ms', { stream: logger.stream }));
 
 // IP 访问日志中间件
 app.use(ipLogger);

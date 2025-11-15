@@ -13,8 +13,11 @@ if (!fs.existsSync(ipLogDir)) {
 
 // IP访问日志格式
 const ipLogFormat = (req, res, next) => {
-  // 更简洁的IP获取方式
-  const clientIP = req.ip || req.headers['x-forwarded-for'] || 'unknown';
+  // 获取真实客户端IP（支持代理转发）
+  const clientIP = req.headers['x-forwarded-for']?.split(',')[0] || 
+                  req.headers['x-real-ip'] || 
+                  req.ip || 
+                  'unknown';
   
   const timestamp = new Date().toISOString();
   const method = req.method;

@@ -139,6 +139,7 @@ temp/
 
 # Documentation
 docs/
+IFLOW.md
 
 # VSCode settings
 .vscode/
