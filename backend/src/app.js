@@ -4,7 +4,10 @@ const path = require('path');
 const swaggerUi = require('swagger-ui-express');
 const config = require('./config');
 const swaggerSpec = require('./config/swagger');
-const requestLogger = require('./middlewares/requestLogger');
+const morgan = require('morgan');
+const logger = require('./utils/logger');
+const ipLogger = require('./middlewares/ipLogger');
+
 const { errorHandler, notFoundHandler } = require('./middlewares/errorHandler');
 
 const app = express();
@@ -19,8 +22,11 @@ app.use(
   })
 );
 
-// 请求日志
-app.use(requestLogger);
+// Morgan 日志中间件
+app.use(morgan('combined', { stream: logger.stream }));
+
+// IP 访问日志中间件
+app.use(ipLogger);
 
 // 解析 JSON 请求体（增加大小限制以支持大文件上传）
 app.use(express.json({ limit: '50mb' }));

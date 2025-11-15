@@ -167,8 +167,10 @@ class ConfigService {
       for (const configData of configsData) {
         const { key, value, type, description, is_public } = configData;
 
-        // 序列化值
-        const serializedValue = type === 'json' ? value : this.serializeValue(value, type || 'string');
+        // 序列化值（JSON类型直接存储，其他类型进行序列化）
+        const serializedValue = (type === 'json' || typeof value === 'object') 
+          ? JSON.stringify(value) 
+          : this.serializeValue(value, type || 'string');
 
         // 更新或创建配置
         const result = await this.updateConfig(key, {

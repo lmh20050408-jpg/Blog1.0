@@ -14,7 +14,8 @@ const logFormat = winston.format.combine(
   winston.format.errors({ stack: true }),
   winston.format.printf(({ timestamp, level, message, stack }) => {
     return stack 
-      ? `${timestamp} [${level.toUpperCase()}]: ${message}\n${stack}`
+      ? `${timestamp} [${level.toUpperCase()}]: ${message}
+${stack}`
       : `${timestamp} [${level.toUpperCase()}]: ${message}`;
   })
 );
@@ -53,5 +54,13 @@ logger.add(
     ),
   })
 );
+
+// 创建一个 stream 对象，用于 morgan
+logger.stream = {
+  write: (message) => {
+    // 移除 morgan 添加的额外换行符
+    logger.info(message.trim());
+  },
+};
 
 module.exports = logger;
