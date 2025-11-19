@@ -18,14 +18,24 @@ const createTransporter = () => {
       },
     });
 
-    // 验证传输器配置
-    transporter.verify((error, success) => {
-      if (error) {
-        logger.error('Email transporter verification failed:', error);
-      } else {
-        logger.info('Email transporter is ready to send messages');
-      }
-    });
+    // 根据环境变量决定是否进行传输器验证（开发环境中常常没有可用 SMTP）
+    const skipVerify = process.env.SKIP_SMTP_VERIFY === 'true'
+      || !config.smtp.host
+      || !config.smtp.auth?.user
+      || !config.smtp.auth?.pass
+
+    if (skipVerify) {
+      logger.info('Email transporter verification skipped (SKIP_SMTP_VERIFY or incomplete config)');
+    } else {
+      // 验证传输器配置
+      transporter.verify((error, success) => {
+        if (error) {
+          logger.error('Email transporter verification failed:', error);
+        } else {
+          logger.info('Email transporter is ready to send messages');
+        }
+      });
+    }
 
     return transporter;
   } catch (error) {
