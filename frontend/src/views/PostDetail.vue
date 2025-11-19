@@ -250,7 +250,7 @@ const fetchRecentPosts = async () => {
       page: 1,
       pageSize: 5
     })
-    recentPosts.value = postsStore.posts.slice(0, 5)
+  recentPosts.value = (postsStore.posts ?? []).slice(0, 5)
   } catch (err) {
     console.error('Failed to fetch recent posts:', err)
   }

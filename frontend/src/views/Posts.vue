@@ -66,7 +66,7 @@
 
         <!-- Empty State -->
         <EmptyState
-          v-else-if="!postsStore.loading && postsStore.posts.length === 0"
+          v-else-if="!postsStore.loading && posts.length === 0"
           title="未找到文章"
           description="没有符合您筛选条件的文章。请尝试调整搜索条件。"
           action-text="清除筛选"
@@ -83,7 +83,7 @@
         <!-- Posts Grid -->
         <div v-else class="posts-page__grid">
           <BlogPostCard
-            v-for="post in postsStore.posts"
+            v-for="post in posts"
             :key="post.id"
             :post="post"
             layout="grid"
@@ -92,9 +92,9 @@
 
         <!-- Pagination -->
         <Pagination
-          v-if="!postsStore.loading && postsStore.posts.length > 0"
-          :current-page="postsStore.pagination.page"
-          :total-pages="postsStore.pagination.totalPages"
+          v-if="!postsStore.loading && posts.length > 0"
+          :current-page="pagination.page"
+          :total-pages="pagination.totalPages"
           @page-change="handlePageChange"
         />
       </div>
@@ -114,7 +114,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, watch } from 'vue'
+import { ref, onMounted, watch, computed } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 import { usePostsStore } from '@/stores/posts'
 import { categoriesApi } from '@/services/api/categories'
@@ -129,6 +129,15 @@ import type { Category, Tag, Post } from '@/types/models'
 const router = useRouter()
 const route = useRoute()
 const postsStore = usePostsStore()
+
+// Defensive computed wrapper: ensure posts is always an array
+  const posts = computed(() => postsStore.posts ?? [])
+
+  const pagination = computed(() => {
+    const p: any = postsStore.pagination
+    if (p && typeof p.value !== 'undefined') return p.value
+    return p ?? { page: 1, pageSize: 10, total: 0, totalPages: 0 }
+  })
 
 const selectedCategoryId = ref<number | null>(null)
 const selectedTagId = ref<number | null>(null)
@@ -187,8 +196,8 @@ const fetchPopularPosts = async () => {
       page: 1,
       pageSize: 5
     })
-    // Store popular posts separately (top 5 by view count would be ideal)
-    popularPosts.value = postsStore.posts.slice(0, 5)
+  // Store popular posts separately (top 5 by view count would be ideal)
+  popularPosts.value = (postsStore.posts ?? []).slice(0, 5)
   } catch (error) {
     console.error('Failed to fetch popular posts:', error)
   }

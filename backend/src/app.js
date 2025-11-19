@@ -72,6 +72,18 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
+// 根路径：返回服务基本信息与文档链接
+app.get('/', (req, res) => {
+  const host = req.get('host');
+  const protocol = req.protocol;
+  res.json({
+    service: 'Blog API',
+    environment: config.env,
+    docs: `${protocol}://${host}/api-docs`,
+    health: `${protocol}://${host}/health`,
+  });
+});
+
 // API 路由
 app.use('/api/v1', require('./routes/v1'));
 

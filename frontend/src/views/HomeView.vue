@@ -100,8 +100,14 @@ import EmptyState from '@/components/common/EmptyState.vue'
 
 const postsStore = usePostsStore()
 
-const posts = computed(() => postsStore.posts)
-const pagination = computed(() => postsStore.pagination)
+// Ensure posts is always an array to avoid runtime undefined errors
+const posts = computed(() => postsStore.posts ?? [])
+const pagination = computed(() => {
+  const p: any = postsStore.pagination
+  // postsStore.pagination is a ref in the store; return its value if present, otherwise a safe default
+  if (p && typeof p.value !== 'undefined') return p.value
+  return p ?? { page: 1, pageSize: 10, total: 0, totalPages: 0 }
+})
 const loading = computed(() => postsStore.loading)
 const error = computed(() => postsStore.error)
 

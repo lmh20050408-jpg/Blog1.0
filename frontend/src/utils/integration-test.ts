@@ -143,9 +143,9 @@ export class IntegrationTester {
       this.addResult(
         'Posts Store',
         'success',
-        `文章数据: ${postsStore.posts.length} 篇文章`,
+        `文章数据: ${(postsStore.posts ?? []).length} 篇文章`,
         {
-          postsCount: postsStore.posts.length,
+          postsCount: (postsStore.posts ?? []).length,
           hasCurrentPost: !!postsStore.currentPost
         }
       )
@@ -156,8 +156,8 @@ export class IntegrationTester {
         this.addResult(
           'Categories Store',
           'success',
-          `分类数据: ${categoriesStore.categories.length} 个分类`,
-          { categoriesCount: categoriesStore.categories.length }
+          `分类数据: ${(categoriesStore.categories ?? []).length} 个分类`,
+          { categoriesCount: (categoriesStore.categories ?? []).length }
         )
       } catch (error) {
         this.addResult('Categories Store', 'warning', '分类 Store 未初始化')
@@ -169,8 +169,8 @@ export class IntegrationTester {
         this.addResult(
           'Tags Store',
           'success',
-          `标签数据: ${tagsStore.tags.length} 个标签`,
-          { tagsCount: tagsStore.tags.length }
+          `标签数据: ${(tagsStore.tags ?? []).length} 个标签`,
+          { tagsCount: (tagsStore.tags ?? []).length }
         )
       } catch (error) {
         this.addResult('Tags Store', 'warning', '标签 Store 未初始化')

@@ -15,7 +15,7 @@
 
     <!-- Empty State -->
     <EmptyState
-      v-else-if="!loading && tags.length === 0"
+      v-else-if="!loading && (!tags || tags.length === 0)"
       title="未找到标签"
       description="目前没有可用的标签。"
     >
@@ -31,7 +31,7 @@
     <div v-else class="tags-page__content">
       <div class="tags-page__cloud-wrapper">
         <TagCloud
-          :tags="tags"
+          :tags="tags || []"
           :max-tags="100"
           @tag-click="handleTagClick"
         />
@@ -41,7 +41,7 @@
       <div class="tags-page__stats">
         <div class="tags-page__stat-item">
           <span class="tags-page__stat-label">标签总数</span>
-          <span class="tags-page__stat-value">{{ tags.length }}</span>
+          <span class="tags-page__stat-value">{{ (tags && tags.length) || 0 }}</span>
         </div>
         <div class="tags-page__stat-item">
           <span class="tags-page__stat-label">文章总数</span>

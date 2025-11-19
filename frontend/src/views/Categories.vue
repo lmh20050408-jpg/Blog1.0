@@ -21,7 +21,7 @@
 
     <!-- Empty State -->
     <EmptyState
-      v-else-if="!loading && categories.length === 0"
+      v-else-if="!loading && safeCategories.length === 0"
       title="未找到分类"
       description="目前没有可用的分类。"
     >
@@ -36,7 +36,7 @@
     <!-- Categories Grid -->
     <div v-else class="categories-page__grid">
       <router-link
-        v-for="category in categories"
+        v-for="category in safeCategories"
         :key="category.id"
         :to="`/categories/${category.id}`"
         class="category-card"
@@ -67,7 +67,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { RouterLink } from 'vue-router'
 import { categoriesApi } from '@/services/api/categories'
 import Skeleton from '@/components/common/Skeleton.vue'
@@ -75,6 +75,9 @@ import EmptyState from '@/components/common/EmptyState.vue'
 import type { Category } from '@/types/models'
 
 const categories = ref<Category[]>([])
+
+// Defensive computed wrapper to ensure template always sees a plain array
+const safeCategories = computed(() => categories.value ?? [])
 const loading = ref(false)
 
 // Get category header style with dynamic color

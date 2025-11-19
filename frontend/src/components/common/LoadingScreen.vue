@@ -212,14 +212,14 @@ defineExpose({
 .loading-title {
   font-size: 4rem;
   font-weight: 700;
-  margin: 0;
+  margin: 0;/* 清除外边距 */
   letter-spacing: 0.2em;
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;/* 裁剪动画到文字 */
+  -webkit-text-fill-color: transparent;/* 文字透明 */
   background-clip: text;
-  animation: pulse 2s ease-in-out infinite;
-  text-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+  animation: pulse 2s ease-in-out infinite;/* 缓动函数；循环 */
+  text-shadow: 0 0 60px white;
 }
 
 .bottom-section {

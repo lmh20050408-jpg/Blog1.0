@@ -128,8 +128,13 @@ const portfolioItems = [
   { image: 'https://picsum.photos/seed/project6/1600/1200', text: '项目六' }
 ]
 
-const posts = computed(() => postsStore.posts)
-const pagination = computed(() => postsStore.pagination)
+// Ensure posts is always an array to avoid runtime undefined errors
+const posts = computed(() => postsStore.posts ?? [])
+  const pagination = computed(() => {
+    const p: any = postsStore.pagination
+    if (p && typeof p.value !== 'undefined') return p.value
+    return p ?? { page: 1, pageSize: 10, total: 0, totalPages: 0 }
+  })
 const loading = computed(() => postsStore.loading)
 const error = computed(() => postsStore.error)
 

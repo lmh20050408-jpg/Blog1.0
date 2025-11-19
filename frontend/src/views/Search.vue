@@ -109,7 +109,7 @@
       <div class="search-page__results-header">
         <h2 class="search-page__results-title">
           <template v-if="!postsStore.loading">
-            {{ postsStore.pagination.total }} result{{ postsStore.pagination.total !== 1 ? 's' : '' }}
+            {{ pagination.total }} result{{ pagination.total !== 1 ? 's' : '' }}
             <span v-if="debouncedQuery" class="search-page__results-query">
               for "<span class="search-page__highlight">{{ debouncedQuery }}</span>"
             </span>
@@ -133,7 +133,7 @@
 
       <!-- Empty State -->
       <EmptyState
-        v-else-if="!postsStore.loading && postsStore.posts.length === 0"
+        v-else-if="!postsStore.loading && posts.length === 0"
         title="No results found"
         :description="`We couldn't find any articles matching '${debouncedQuery}'. Try different keywords or adjust your filters.`"
         action-text="Clear Search"
@@ -160,9 +160,9 @@
 
       <!-- Pagination -->
       <Pagination
-        v-if="!postsStore.loading && postsStore.posts.length > 0"
-        :current-page="postsStore.pagination.page"
-        :total-pages="postsStore.pagination.totalPages"
+        v-if="!postsStore.loading && posts.length > 0"
+        :current-page="pagination.page"
+        :total-pages="pagination.totalPages"
         @page-change="handlePageChange"
       />
     </div>
@@ -199,6 +199,16 @@ import type { Category, Tag } from '@/types/models'
 const route = useRoute()
 const router = useRouter()
 const postsStore = usePostsStore()
+
+// Defensive posts wrapper to avoid runtime undefined when accessing length
+const posts = computed(() => postsStore.posts ?? [])
+
+// Defensive pagination wrapper: ensure we always have a plain pagination object
+const pagination = computed(() => {
+  const p: any = postsStore.pagination
+  if (p && typeof p.value !== 'undefined') return p.value
+  return p ?? { page: 1, pageSize: 10, total: 0, totalPages: 0 }
+})
 
 // Search state
 const searchQuery = ref('')
@@ -270,9 +280,9 @@ const highlightText = (text: string, keyword: string): string => {
 
 // Create highlighted posts
 const highlightedPosts = computed(() => {
-  if (!debouncedQuery.value) return postsStore.posts
+  if (!debouncedQuery.value) return posts.value
 
-  return postsStore.posts.map(post => ({
+  return posts.value.map(post => ({
     ...post,
     title: highlightText(post.title, debouncedQuery.value),
     excerpt: post.excerpt ? highlightText(post.excerpt, debouncedQuery.value) : ''
